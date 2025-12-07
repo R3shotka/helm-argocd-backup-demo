@@ -1,0 +1,26 @@
+{{- if .Values.restore.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: demo-app-restore
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: restore
+          image: alpine
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Restore started"
+              echo "Backup file content (if exists):"
+              cat /backup/backup.log || echo "No backup file found"
+          volumeMounts:
+            - name: backup
+              mountPath: /backup
+      volumes:
+        - name: backup
+          persistentVolumeClaim:
+            claimName: demo-app-data
+{{- end }}
