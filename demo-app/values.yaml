@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: "stable"
+
+service:
+  type: ClusterIP
+  port: 80
+
+persistence:
+  size: 1Gi
+
+backup:
+  schedule: "*/5 * * * *"   # кожні 5 хвилин
+
+restore:
+  enabled: false            # спочатку ВИМКНЕНО, потім увімкнемо
